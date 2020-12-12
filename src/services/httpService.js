@@ -18,7 +18,6 @@ class HttpService {
         if (!HOST) {
             throw new Error("Host not find")
         }
-        console.log('HOST: ', HOST);
         return HOST;
     }
 

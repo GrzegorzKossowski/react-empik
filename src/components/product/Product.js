@@ -1,18 +1,24 @@
 import React from 'react'
+import Status from '../status/Status'
 import './product.css'
+import { priceToLocale } from '../../utils/utils'
 
-const priceToLocale = (price) => {
-    if (isNaN(price)) {
-        throw new Error('Data not a number.')
-    }
-    return new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(price)
-}
+const Product = (props) => {
 
-const Product = ({ name = 'Default', price = 0 }) => {
+    const { name = 'Default', price = 0, amount, pid } = props
+
     return (
-        <li className='row'>
-            {name}, cena: {priceToLocale(price)} | [+] [-] Obecnie masz X sztuk produktu
-        </li>
+        <div className='product-row'>
+            <div className='product-cell'>
+                {name}
+            </div>
+            <div className='product-cell'>
+                cena: {priceToLocale(price)}
+            </div>
+            <div className='product-cell text-right'>
+                <Status {...props} />
+            </div>
+        </div>
     )
 }
 

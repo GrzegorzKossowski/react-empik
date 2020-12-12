@@ -1,7 +1,7 @@
 import HttpService from '../services/httpService'
 import ENDPOINTS from '../config/endpoints.js'
 
-export const fetchCartProducts = () => {
+export const fetchProducts = () => {
     return new Promise((resolve, reject) => {
         const httpClient = new HttpService();
         httpClient.get({

@@ -1,5 +1,9 @@
 .product-row {
-    padding: 10px;
+  display: table-row;
+  width: 100%;
+}
+.product-cell {
     border-bottom: 1px solid silver;
-    list-style: none;
+    padding: 10px;
+    display: table-cell;
 }

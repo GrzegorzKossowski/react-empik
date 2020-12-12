@@ -1,46 +1,37 @@
-import React, { useEffect, useState, useReducer } from "react";
-import Product from "../product/Product";
-import { fetchCartProducts } from '../../api/cart-api'
+import React, { useEffect } from "react";
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from '../../redux/cart/cart-actions'
 
-// reducer
-import reducer, { initialState } from '../../reducer/reducer'
-import { fetchAllProducts } from '../../reducer/cart-actions'
-import { CART_TYPES } from '../../reducer/cart-types'
+import Product from "../product/Product";
+import './cart.css'
 
 const Cart = (props) => {
-
-  const [state, dispatch] = useReducer(reducer, initialState)
-
-  const [cart, setCart] = useState([])
-  const [pending, setPending] = useState(false)
-  const [error, setError] = useState(false)
-
+  const dispatch = useDispatch()
   useEffect(() => {
-    fetchAllProducts(dispatch);
+    // effect
+    dispatch(listProducts())
     return () => {
       // cleanup
     }
-  }, [])
+  }, [dispatch])
+
+  const { loading, error, products } = useSelector(state => state.cart)
 
   return (
     <>
       {
-        state.loading
+        loading
           ?
           (<div>Loading...</div>)
           :
-          state.error
+          error
             ?
-            (<div>{state.error.message}</div>)
+            (<div>{error.message}</div>)
             :
             (
-              <div>
-                <ul>
-                  {state.cart.map(product => <Product key={product.pid} {...product} />)}
-                </ul>
-                <div style={{textAlign: 'right'}}>
-                  suma:
-                </div>
+              <div className='cart-table'>
+                {products.map(product => <Product key={product.pid} {...product} />)}
               </div>
             )
       }

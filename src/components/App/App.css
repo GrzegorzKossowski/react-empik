@@ -8,3 +8,11 @@
     border-bottom: 1px solid silver;
     list-style: none;
 }
+
+.text-right {
+    text-align: right;
+}
+
+button {
+    margin: 0 5px 0 5px;
+}
