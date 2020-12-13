@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { incrementAmount, decrementAmount, resetAmountToMin } from '../../redux/cart/cart-actions'
-import { debounce, DEBOUNCE_TIMEOUT } from '../../utils/utils'
+import { updateProductAmount } from '../../redux/cart/cart-actions'
 import { useDebounce } from '../../utils/useDebounce'
+import { checkAmount } from '../../api/cart-api'
+import { DEBOUNCE_DELAY } from "../../config/config"
 
 import './status.css'
 
@@ -13,33 +14,55 @@ const prularizeForm = (amount) => {
 
 const Status = (props) => {
 
-    const { amount, pid, min, max, isBlocked = false } = props
+    const { pid, min, max, isBlocked = false } = props
     const dispatch = useDispatch()
+    const [productAmount, setProductAmount] = useState(min)
 
-    const __handleIncrement = debounce(
-        function () {
-            return // skąd się to wzięło???
-        }, DEBOUNCE_TIMEOUT
-    )
+    const debouncedAmount = useDebounce(productAmount, DEBOUNCE_DELAY)
+
+    useEffect(() => {
+        if (debouncedAmount !== min) {
+
+            checkAmount({
+                "pid": pid,
+                "quantity": debouncedAmount
+            })
+                .then((resolve, reject) => {
+                    const { data } = resolve
+                    if (data.success) {
+                        setProductAmount(debouncedAmount)
+                        dispatch(updateProductAmount(pid, debouncedAmount))
+                    }
+                })
+                .catch(error => {
+                    const { data } = error
+                    console.log(data);
+                    setProductAmount(min)
+                    dispatch(updateProductAmount(pid, min))
+                })
+        }
+        return () => {
+            // cleanup
+        }
+    }, [debouncedAmount, dispatch])
 
     const handleIncrement = () => {
-        debouncedSearchTerm
-        dispatch(incrementAmount(pid))
+        setProductAmount(prevProductAmount => prevProductAmount + 1)
     }
 
     const handleDecrement = () => {
-        dispatch(decrementAmount(pid))
+        setProductAmount(prevProductAmount => prevProductAmount - 1)
     }
 
     return (
         <div className='status-message'>
-            {min} | {max} | 
+            {min} | {max} |
             <span>
-                Obecnie masz {amount} {prularizeForm(amount)} produktu
+                Obecnie masz {productAmount} {prularizeForm(productAmount)} produktu
             </span>
             <button onClick={handleIncrement} disabled={isBlocked}>+</button>
             <button onClick={handleDecrement} disabled={isBlocked}>-</button>
-        </div>
+        </div >
     )
 }
 

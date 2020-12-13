@@ -2,9 +2,9 @@ import { fetchProducts, checkAmount } from '../../api/cart-api'
 import { CartActionTypes } from './cart-types'
 import { debounce, DEBOUNCE_TIMEOUT } from '../../utils/utils'
 
-export const listProducts = () => (dispatch) => {
+export const listProducts = () => async (dispatch) => {
     dispatch({ type: CartActionTypes.PRODUCT_LIST_REQUEST })
-    fetchProducts().then((resolve, reject) => {
+    await fetchProducts().then((resolve, reject) => {
         const { data } = resolve
         const products = data.map(product => {
             return {
@@ -23,8 +23,20 @@ export const listProducts = () => (dispatch) => {
         })
     })
 }
+export const updateProductAmount = (pid, amount) => async (dispatch, getState) => {
 
-export const incrementAmount = (pid) => (dispatch, getState) => {
+    const products = getState().cart.products.map(prod => {
+        return { ...prod, amount: prod.pid === pid ? amount : prod.amount }
+    })
+
+    dispatch({
+        type: CartActionTypes.PRODUCT_UPDATE_AMOUNT,
+        payload: products
+    })
+
+}
+/*
+export const incrementAmount = (pid) => async (dispatch, getState) => {
 
     const products = getState().cart.products.map(prod => {
         return { ...prod, amount: prod.pid === pid ? prod.amount + 1 : prod.amount }
@@ -36,20 +48,18 @@ export const incrementAmount = (pid) => (dispatch, getState) => {
     })
 
 }
-
-export const decrementAmount = (pid) => (dispatch, getState) => {
-
+export const decrementAmount = (pid) => async (dispatch, getState) => {
+    
     const products = getState().cart.products.map(prod => {
         return { ...prod, amount: prod.pid === pid ? prod.amount - 1 : prod.amount }
     })
-
+    
     dispatch({
         type: CartActionTypes.PRODUCT_AMOUNT_DECREMENT,
         payload: products
     })
 }
-
-export const resetAmountToMin = (pid) => (dispatch, getState) => {
+export const resetAmountToMin = (pid) => async (dispatch, getState) => {
 
     const products = getState().cart.products.map(prod => {
         return { ...prod, amount: prod.pid === pid ? prod.min : prod.amount }
@@ -60,8 +70,12 @@ export const resetAmountToMin = (pid) => (dispatch, getState) => {
         payload: products
     })
 }
+*/
+export const setTotalSum = () => async (dispatch, getState) => {
 
-export const setTotalSum = (total) => (dispatch) => {
+    const total = getState().cart.products.reduce((acc, prod) => {
+        return acc + (prod.price * prod.amount)
+    }, 0)
 
     dispatch({
         type: CartActionTypes.SET_TOTAL_SUM,
