@@ -33,11 +33,33 @@ class HttpService {
             // url: `http://localhost:3030/api/cart`
         })
             .then(response => {
-                options.onSuccess(response)
+                options.onSuccess(response);
             })
             .catch(error => {
                 options.onError(error)
             })
+    }
+
+    post = options => {
+        axios({
+            headers: this._resolveHeaders(options.headers),
+            data: options.payload ? options.payload : {},
+            method: 'post',
+            url: this._getUrl(options.endpoint)
+            // url: `http://localhost:3030/api/product/check`
+        })
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    options.onSuccess(response);
+                } else {
+                    throw new Error('No data', response);
+                }
+            })
+            .catch(error => {
+                options.onError(error.response)
+            })
+
+
     }
 
 }

@@ -14,11 +14,10 @@ export const cartReducer = (state = initialState, action) => {
             return { ...state, products: action.payload }
         case CartActionTypes.PRODUCT_AMOUNT_DECREMENT:
             return { ...state, products: action.payload }
+        case CartActionTypes.PRODUCT_AMOUNT_RESET_TO_MIN:
+            return { ...state, products: action.payload }
         case CartActionTypes.SET_TOTAL_SUM:
-            return {
-                ...state,
-                total: action.payload
-            }
+            return { ...state, total: action.payload }
         default:
             return state
     }

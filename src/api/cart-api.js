@@ -12,3 +12,16 @@ export const fetchProducts = () => {
         })
     })
 }
+
+export const checkAmount = (data) => {
+    return new Promise((resolve, reject) => {
+        const httpClient = new HttpService();
+        httpClient.post({
+            headers: {},
+            endpoint: `${ENDPOINTS.CHECK}`,
+            payload: data,
+            onSuccess: data => resolve(data),
+            onError: error => reject(error)
+        })
+    })
+}

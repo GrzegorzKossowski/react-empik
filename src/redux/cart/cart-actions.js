@@ -1,5 +1,6 @@
-import { fetchProducts } from '../../api/cart-api'
+import { fetchProducts, checkAmount } from '../../api/cart-api'
 import { CartActionTypes } from './cart-types'
+import { debounce, DEBOUNCE_TIMEOUT } from '../../utils/utils'
 
 export const listProducts = () => (dispatch) => {
     dispatch({ type: CartActionTypes.PRODUCT_LIST_REQUEST })
@@ -26,29 +27,36 @@ export const listProducts = () => (dispatch) => {
 export const incrementAmount = (pid) => (dispatch, getState) => {
 
     const products = getState().cart.products.map(prod => {
-        if (prod.amount < prod.max) {
-            return { ...prod, amount: prod.pid === pid ? prod.amount + 1 : prod.amount }
-        }
-        return { ...prod }
+        return { ...prod, amount: prod.pid === pid ? prod.amount + 1 : prod.amount }
     })
 
     dispatch({
         type: CartActionTypes.PRODUCT_AMOUNT_INCREMENT,
         payload: products
     })
+
 }
 
 export const decrementAmount = (pid) => (dispatch, getState) => {
 
     const products = getState().cart.products.map(prod => {
-        if (prod.amount > prod.min) {
-            return { ...prod, amount: prod.pid === pid ? prod.amount - 1 : prod.amount }
-        }
-        return { ...prod }
+        return { ...prod, amount: prod.pid === pid ? prod.amount - 1 : prod.amount }
     })
 
     dispatch({
         type: CartActionTypes.PRODUCT_AMOUNT_DECREMENT,
+        payload: products
+    })
+}
+
+export const resetAmountToMin = (pid) => (dispatch, getState) => {
+
+    const products = getState().cart.products.map(prod => {
+        return { ...prod, amount: prod.pid === pid ? prod.min : prod.amount }
+    })
+
+    dispatch({
+        type: CartActionTypes.PRODUCT_AMOUNT_RESET_TO_MIN,
         payload: products
     })
 }
