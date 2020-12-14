@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
-//redux
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTotalSum } from '../../redux/cart/cart-actions'
-
 import { priceToLocale } from '../../utils/utils'
+import { DotSpinner } from "../spinner/Spinner";
+
 import './cart-summary.css'
 
+/**
+ * Component summarizes total amount of money to pay for all products in CART
+ * 
+ * @param {object} props properties from parent component
+ */
 const CartSummary = (props) => {
 
   const dispatch = useDispatch()
-  const { loading, error, products, total } = useSelector(state => state.cart)
-  // const [total, setTotal] = useState(0)
+  const { loading, calculating, error, products, total } = useSelector(state => state.cart)
 
   useEffect(() => {
-    let totalSum = 0
-    if (products.length !== 0) {
-      totalSum = products.reduce((acc, prod) => {
-        return acc + (prod.price * prod.amount)
-      }, 0)
-    }
-    // setTotal(totalSum)
+
     dispatch(setTotalSum())
+
     return () => {
       // cleanup
     }
@@ -35,10 +34,23 @@ const CartSummary = (props) => {
           :
           error
             ?
-            (<div>{error.message}</div>)
+            (<div className="alert alert-danger error-alert" role="alert" data-cart-error={error.message}>
+              Nie można przeliczyć kwoty. Zgłoś błąd lub wróć później.{" "}
+            </div>)
             :
             (
-              <div><i className="fas fa-shopping-cart"></i> Total: {priceToLocale(total)}</div>
+              <div className='d-flex justify-content-between mt-2 cart-summary' >
+                <div>
+                  <i className="fas fa-shopping-cart"></i> Razem:
+                </div>
+                {calculating ?
+                  <DotSpinner />
+                  :
+                  <div className='cart-summary-total'>
+                    {priceToLocale(total)}
+                  </div>
+                }
+              </div>
             )
       }
     </>

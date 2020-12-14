@@ -1,6 +1,9 @@
 import axios from 'axios'
 import config from '../config/config'
 
+/**
+ * Service providing connection do server
+ */
 class HttpService {
     constructor() {
         this.headers = {
@@ -9,10 +12,17 @@ class HttpService {
         };
     }
 
+    /**
+     * Combines host domain with endpoint
+     * @param {string} endpoint rest endpoint to server
+     */
     _getUrl = (endpoint) => {
         return this._getHost() + endpoint
     }
 
+    /**
+     * Gets host domain from config
+     */
     _getHost = () => {
         const HOST = config.HOST
         if (!HOST) {
@@ -21,10 +31,18 @@ class HttpService {
         return HOST;
     }
 
+    /**
+     * Resolves custom headers combineing them with default class headers
+     * @param {object} customHeaders JSON object - custom headers
+     */
     _resolveHeaders = (customHeaders = {}) => {
         return { ...this.headers, ...customHeaders }
     }
-
+    
+    /**
+     * GET method for get requests
+     * @param {object} options JSON object
+     */
     get = options => {
         axios({
             headers: this._resolveHeaders(options.headers),
@@ -40,6 +58,10 @@ class HttpService {
             })
     }
 
+    /**
+     * POST method for post requests
+     * @param {object} options JSON object
+     */
     post = options => {
         axios({
             headers: this._resolveHeaders(options.headers),

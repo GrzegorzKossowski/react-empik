@@ -1,9 +1,16 @@
-.product-row {
-  display: table-row;
-  width: 100%;
+.product-row:hover{
+  background-color: rgba(200, 200, 200, 0.1);
 }
-.product-cell {
-    border-bottom: 1px solid silver;
-    padding: 10px;
-    display: table-cell;
+
+.product-row:last-child {
+  border-bottom: 4px solid silver;
+}
+
+.product-name {
+  font-weight: bold;
+}
+
+.product-price {
+  color: var(--empik-orange);
+  font-weight: bold;
 }

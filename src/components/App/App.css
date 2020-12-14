@@ -1,21 +1,31 @@
-.container {
-  width: 1000px;
-  margin: 100px auto 0 auto;
+:root {
+  --empik-orange: #ff6b00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.store {
+  height: 100vh;
 }
 
 .row {
   padding: 10px;
-  border-bottom: 1px solid silver;
-  list-style: none;
-}
-
-.text-right {
-  text-align: right;
+  border-bottom: 1px solid rgb(192, 192, 192);
 }
 
 button {
   margin: 0 5px 0 5px;
-  border-radius: 5px;
-  font-weight: bold;
   cursor: pointer;
+}
+
+.error-alert:hover::after {
+  content: attr(data-cart-error);
+  color: rgb(219, 81, 81);
 }

@@ -4,24 +4,27 @@ import './product.css'
 import { priceToLocale } from '../../utils/utils'
 
 
-//{"pid":"8e5e1248","name":"Patelnia","price":"89.99","max":10,"min":1}
-
+/**
+ * Displays single product row
+ * 
+ * @param {object} props properties
+ */
 const Product = (props) => {
 
-    const { pid, name = 'Default', price = 0, min, max, isBlocked } = props
+    const { name = 'Default', price = 0 } = props
 
     return (
-        <li className='product-row'>
-            <div className='product-cell'>
+        <div className='row d-flex align-items-center product-row'>
+            <div className="col-md-3 product-name">
                 {name}
             </div>
-            <div className='product-cell'>
-                cena: {priceToLocale(price)}
-            </div>
-            <div className='product-cell text-right'>
+            <div className="col-md-6">
                 <Status {...props} />
             </div>
-        </li>
+            <div className="col-md-3 text-md-end">
+                cena: <span className='product-price'>{priceToLocale(price)}</span>
+            </div>
+        </div>
     )
 }
 

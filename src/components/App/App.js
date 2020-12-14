@@ -5,10 +5,12 @@ import './App.css';
 
 const App = () => {
   return (
-    <div className="container">
-      <h3>Lista produktów</h3>
-      <Cart />
-      <CartSummary />
+    <div className='store d-flex flex-column justify-content-center'>
+      <div className="container">
+        <h3>Lista produktów</h3>
+        <Cart />
+        <CartSummary />
+      </div>
     </div>
   );
 };

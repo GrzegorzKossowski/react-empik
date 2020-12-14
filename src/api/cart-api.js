@@ -3,7 +3,6 @@ import ENDPOINTS from '../config/endpoints.js'
 
 /**
  * Gets all products from server.
- * @param
  */
 export const fetchProducts = () => {
     return new Promise((resolve, reject) => {

@@ -1,0 +1,8 @@
+.cart-summary{
+  font-size: 1.4em;
+}
+
+.cart-summary-total {
+  color: var(--empik-orange);
+  font-weight: bolder;
+}
