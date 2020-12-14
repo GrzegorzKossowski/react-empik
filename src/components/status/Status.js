@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { updateProductAmount } from '../../redux/cart/cart-actions'
+import { updateProductAmount, incrementAmount } from '../../redux/cart/cart-actions'
 import { useDebounce } from '../../utils/useDebounce'
 import { checkAmount } from '../../api/cart-api'
 import { DEBOUNCE_DELAY } from "../../config/config"
@@ -15,12 +15,15 @@ const prularizeForm = (amount) => {
 const Status = (props) => {
 
     const { pid, min, max, isBlocked = false } = props
-    const dispatch = useDispatch()
     const [productAmount, setProductAmount] = useState(min)
-
+    const dispatch = useDispatch()
     const debouncedAmount = useDebounce(productAmount, DEBOUNCE_DELAY)
 
+
     useEffect(() => {
+        // effect
+        console.log("product change", pid.slice(0, 8));
+        dispatch(updateProductAmount(pid, productAmount))
         if (debouncedAmount !== min) {
 
             checkAmount({
@@ -29,16 +32,11 @@ const Status = (props) => {
             })
                 .then((resolve, reject) => {
                     const { data } = resolve
-                    if (data.success) {
-                        setProductAmount(debouncedAmount)
-                        dispatch(updateProductAmount(pid, debouncedAmount))
-                    }
+                    console.log("then", data);
                 })
                 .catch(error => {
                     const { data } = error
-                    console.log(data);
-                    setProductAmount(min)
-                    dispatch(updateProductAmount(pid, min))
+                    console.log("error", data);
                 })
         }
         return () => {
@@ -47,21 +45,25 @@ const Status = (props) => {
     }, [debouncedAmount, dispatch])
 
     const handleIncrement = () => {
-        setProductAmount(prevProductAmount => prevProductAmount + 1)
+        if (productAmount < max) {
+            setProductAmount(prevProductAmount => prevProductAmount + 1)
+        }
     }
 
     const handleDecrement = () => {
-        setProductAmount(prevProductAmount => prevProductAmount - 1)
+        if (productAmount > min) {
+            setProductAmount(prevProductAmount => prevProductAmount - 1)
+        }
     }
+
 
     return (
         <div className='status-message'>
-            {min} | {max} |
             <span>
-                Obecnie masz {productAmount} {prularizeForm(productAmount)} produktu
+                Obecnie masz <span style={{fontWeight: 'bold'}}>{productAmount}</span> {prularizeForm(productAmount)} produktu
             </span>
-            <button onClick={handleIncrement} disabled={isBlocked}>+</button>
-            <button onClick={handleDecrement} disabled={isBlocked}>-</button>
+            <button className='btn btn-primary' onClick={handleIncrement} disabled={isBlocked}><i className="fas fa-plus"></i></button>
+            <button className='btn btn-danger' onClick={handleDecrement} disabled={isBlocked}><i className="fas fa-minus"></i></button>
         </div >
     )
 }

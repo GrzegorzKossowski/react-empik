@@ -27,12 +27,12 @@ const Cart = (props) => {
           :
           error
             ?
-            (<div>{error.message}</div>)
+            (<div class="alert alert-danger" role="alert">{error.message}</div>)
             :
             (
-              <div className='cart-table'>
+              <ul className='cart-table'>
                 {products.map(product => <Product key={product.pid} {...product} />)}
-              </div>
+              </ul>
             )
       }
     </>

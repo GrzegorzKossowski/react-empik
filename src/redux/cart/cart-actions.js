@@ -35,19 +35,19 @@ export const updateProductAmount = (pid, amount) => async (dispatch, getState) =
     })
 
 }
-/*
 export const incrementAmount = (pid) => async (dispatch, getState) => {
-
+    
     const products = getState().cart.products.map(prod => {
         return { ...prod, amount: prod.pid === pid ? prod.amount + 1 : prod.amount }
     })
-
+    
     dispatch({
         type: CartActionTypes.PRODUCT_AMOUNT_INCREMENT,
         payload: products
     })
-
+    
 }
+/*
 export const decrementAmount = (pid) => async (dispatch, getState) => {
     
     const products = getState().cart.products.map(prod => {
@@ -59,6 +59,7 @@ export const decrementAmount = (pid) => async (dispatch, getState) => {
         payload: products
     })
 }
+
 export const resetAmountToMin = (pid) => async (dispatch, getState) => {
 
     const products = getState().cart.products.map(prod => {
@@ -73,9 +74,10 @@ export const resetAmountToMin = (pid) => async (dispatch, getState) => {
 */
 export const setTotalSum = () => async (dispatch, getState) => {
 
-    const total = getState().cart.products.reduce((acc, prod) => {
+    const total = parseFloat(getState().cart.products.reduce((acc, prod) => {
         return acc + (prod.price * prod.amount)
-    }, 0)
+    }, 0).toFixed(2))
+    
 
     dispatch({
         type: CartActionTypes.SET_TOTAL_SUM,

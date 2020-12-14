@@ -9,8 +9,8 @@ import './cart-summary.css'
 const CartSummary = (props) => {
 
   const dispatch = useDispatch()
-  const { loading, error, products } = useSelector(state => state.cart)
-  const [total, setTotal] = useState(0)
+  const { loading, error, products, total } = useSelector(state => state.cart)
+  // const [total, setTotal] = useState(0)
 
   useEffect(() => {
     let totalSum = 0
@@ -19,11 +19,12 @@ const CartSummary = (props) => {
         return acc + (prod.price * prod.amount)
       }, 0)
     }
-    setTotal(totalSum)
+    // setTotal(totalSum)
+    dispatch(setTotalSum())
     return () => {
       // cleanup
     }
-  }, [products])
+  }, [products, dispatch])
 
   return (
     <>
@@ -37,7 +38,7 @@ const CartSummary = (props) => {
             (<div>{error.message}</div>)
             :
             (
-              <div>Cart sum: {priceToLocale(total)}</div>
+              <div><i className="fas fa-shopping-cart"></i> Total: {priceToLocale(total)}</div>
             )
       }
     </>

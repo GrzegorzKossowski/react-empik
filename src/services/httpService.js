@@ -49,11 +49,7 @@ class HttpService {
             // url: `http://localhost:3030/api/product/check`
         })
             .then(response => {
-                if (response.status >= 200 && response.status < 300) {
-                    options.onSuccess(response);
-                } else {
-                    throw new Error('No data', response);
-                }
+                options.onSuccess(response);
             })
             .catch(error => {
                 options.onError(error.response)

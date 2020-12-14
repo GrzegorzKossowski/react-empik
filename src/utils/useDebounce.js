@@ -17,7 +17,6 @@ export const useDebounce = (value, delay) => {
         [value]
     );
 
-    console.log("zwracam debouncedValue", debouncedValue);
     return debouncedValue;
 }
 
