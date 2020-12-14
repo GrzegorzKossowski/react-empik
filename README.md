@@ -1,3 +1,7 @@
+# Final effect v.1.0
+
+[![Empik - Koszyk](/img/empik_cart.jpg)](https://youtu.be/I_HUWmCNniU)
+
 # Zadania
 
 Zadania mogą być wykonane niezależnie, możesz użyć dowolnej biblioteki zewnętrznej. W miarę możliwości użyj Hook API.
