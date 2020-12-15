@@ -11,7 +11,7 @@ const CONFIG = {
 export const COMPANY_BRAND = "Empik"
 
 /**
- * Static debounde delay (env variable)
+ * Static debounce delay (env variable)
  */
 export const DEBOUNCE_DELAY = 250
 

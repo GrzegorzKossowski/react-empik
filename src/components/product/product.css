@@ -2,10 +2,6 @@
   background-color: rgba(200, 200, 200, 0.1);
 }
 
-.product-row:last-child {
-  border-bottom: 4px solid silver;
-}
-
 .product-name {
   font-weight: bold;
 }
