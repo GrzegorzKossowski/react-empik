@@ -1,6 +1,7 @@
 # Final effect v.1.0
 
 [![Empik - Koszyk](/img/empik_cart.jpg)](https://youtu.be/I_HUWmCNniU)
+click picture above or go directly to [YT: Simple reactJS cart](https://youtu.be/I_HUWmCNniU)
 
 # Zadania
 
